@@ -12,7 +12,7 @@ const Company = ({ companyLogo, jobTitle, companyName, location }) => {
   return (
     <View style={styles.container}>
       <View style={styles.logoBox}>
-        <Image source={imageSource} style={styles.logoImage} />
+        <Image source={imageSource} style={styles.logoImage} resizeMode="contain" />
       </View>
       <View style={styles.jobTitleBox}>
         <Text style={styles.jobTitle}>{jobTitle}</Text>

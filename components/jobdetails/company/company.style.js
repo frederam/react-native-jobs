@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.large,
   },
   logoImage: {
-    width: "80%",
-    height: "80%",
+    width: "50%",
+    height: "50%",
   },
   jobTitleBox: {
     marginTop: SIZES.small,
