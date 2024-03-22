@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import styles from './nearbyjobs.style';
@@ -23,7 +23,7 @@ const Nearbyjobs = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.cardsContainer}>
+      <ScrollView style={styles.cardsContainer}>
         {isLoading ? (
           <ActivityIndicator size="large" colors={COLORS.primary} />
         ) : error ? (
@@ -37,7 +37,7 @@ const Nearbyjobs = () => {
             />
           ))
         )}
-      </View>
+      </ScrollView>
     </View>
   )
 }

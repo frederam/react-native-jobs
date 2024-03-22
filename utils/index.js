@@ -1,27 +1,28 @@
-export const checkImage = (url) => {
-    if (!url) return false
-    else {
-        var request = new XMLHttpRequest();
-        request.open("GET", url, true);
-        request.send();
-        request.onload = function () {
-            const status = request.status;
-            if (request.status == 200) //if(statusText == OK)
-            {
-                return true
-            } else {
-                return false
-            }
-        }
-    }
+import { useState, useEffect } from 'react';
 
-}
-export const checkImageURL = (url) => {
-    if (!url) return false
-    else {
-        const pattern = new RegExp('^https?:\\/\\/.+\\.(png|jpg|jpeg|bmp|gif|webp)$', 'i');
-        const check = pattern.test(url);
-        //if (check == true) 
-        return true
+export const getImageSource = async (url, placeholder) => {
+    try {
+      if(!url){
+        return placeholder;
+      }
+      const response = await fetch(url);
+      return response.ok ? { uri: url } : placeholder;
+    } catch (error) {
+      return placeholder;
     }
-};
+  };
+  
+  export const useImageEffect = (url, placeholder) => {
+    const [imageSource, setImageSource] = useState(null);
+  
+    useEffect(() => {
+      const fetchImage = async () => {
+        const source = await getImageSource(url, placeholder);
+        setImageSource(source);
+      };
+  
+      fetchImage();
+    }, [url, placeholder]);
+  
+    return imageSource;
+  };
