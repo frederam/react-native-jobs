@@ -1,64 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { ActivityIndicator, FlatList, Image, TouchableOpacity, View } from "react-native";
-import { Stack, useRouter, useGlobalSearchParams } from "expo-router";
+import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 import { Text, SafeAreaView } from "react-native";
-import axios from "axios";
 
 import { ScreenHeaderBtn, NearbyJobCard } from "../../components";
 import { COLORS, icons, SIZES } from "../../constants";
 import styles from "../../styles/search";
-import { REACT_APP_API_KEY } from "@env";
+import useFetch from "../../hook/useFetch";
 
 const JobSearch = () => {
-  const params = useGlobalSearchParams();
+  const params = useLocalSearchParams();
   const router = useRouter();
-
-  const [searchResult, setSearchResult] = useState([]);
-  const [searchLoader, setSearchLoader] = useState(false);
-  const [searchError, setSearchError] = useState(null);
   const [page, setPage] = useState(1);
+  const flatListRef = useRef(null);
+  console.log(params)
 
-  const handleSearch = async () => {
-    setSearchLoader(true);
-    setSearchResult([]);
-
-    try {
-      const options = {
-        method: "GET",
-        url: `https://jsearch.p.rapidapi.com/search`,
-        headers: {
-          "X-RapidAPI-Key": REACT_APP_API_KEY,
-          "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
-        },
-        params: {
-          query: params.id,
-          page: page.toString(),
-        },
-      };
-
-      const response = await axios.request(options);
-      setSearchResult(response.data.data);
-    } catch (error) {
-      setSearchError(error);
-      console.log(error);
-    } finally {
-      setSearchLoader(false);
-    }
-  };
+  const { data, isLoading, error, reFetch } = useFetch("search", {
+    query: params.id + ' ' + params.city,
+    page: page,
+    num_pages: 1,
+  });
 
   const handlePagination = (direction) => {
     if (direction === "left" && page > 1) {
       setPage(page - 1);
-      handleSearch();
+      reFetch();
     } else if (direction === "right") {
       setPage(page + 1);
-      handleSearch();
+      reFetch();
     }
   };
-
+  const scrollToTop = () => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({ offset: 0, animated: true });
+    }
+  };
   useEffect(() => {
-    handleSearch();
-  }, []);
+    scrollToTop();
+  }, [page]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
@@ -72,7 +51,8 @@ const JobSearch = () => {
       />
 
       <FlatList
-        data={searchResult}
+        ref={flatListRef}
+        data={data}
         renderItem={({ item }) => (
           <NearbyJobCard job={item} handleNavigate={() => router.push(`/job-details/${item.job_id}`)} />
         )}
@@ -82,13 +62,13 @@ const JobSearch = () => {
           <>
             <View style={styles.container}>
               <Text style={styles.searchTitle}>{params.id}</Text>
-              <Text style={styles.noOfSearchedJobs}>Job Opportunities</Text>
+              <Text style={styles.noOfSearchedJobs}>Job Opportunities in {params.city}</Text>
             </View>
             <View style={styles.loaderContainer}>
-              {searchLoader ? (
+              {isLoading ? (
                 <ActivityIndicator size="large" color={COLORS.primary} />
               ) : (
-                searchError && <Text>Oops something went wrong</Text>
+                error && <Text>Oops something went wrong</Text>
               )}
             </View>
           </>

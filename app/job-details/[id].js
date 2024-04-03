@@ -6,7 +6,6 @@ import {
   ScrollView,
   ActivityIndicator,
   RefreshControl,
-  RefreshControlComponent,
 } from "react-native";
 import { Stack, useRouter, useLocalSearchParams, useGlobalSearchParams } from "expo-router";
 import { useCallback, useState, useMemo } from "react";
@@ -23,13 +22,10 @@ const jobDetails = () => {
 
   const { data, isLoading, error, reFetch } = useFetch("job-details", { job_id: params.id });
 
-  const [refreshing, setRefreshing] = useState(false);
   const [activeTab, setActiveTab] = useState(tabs[0]);
 
   const onRefresh = useCallback(() => {
-    setRefreshing(true);
     reFetch()
-    setRefreshing(false)
   }, []);
 
   const displayTabContent = useMemo(() => {
@@ -69,9 +65,9 @@ const jobDetails = () => {
       <>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
         >
-          {isLoading ? (
+          {isLoading && !data[0] ? (
             <ActivityIndicator size="large" color={COLORS.primary} />
           ) : error ? (
             <Text>Something went wrong</Text>
@@ -83,7 +79,7 @@ const jobDetails = () => {
                 companyLogo={data[0]?.employer_logo}
                 jobTitle={data[0]?.job_title}
                 companyName={data[0]?.employer_name}
-                location={data[0]?.job_country}
+                location={data[0]?.job_city + ', ' + data[0]?.job_country}
               />
               <JobTabs tabs={renderedTabs} activeTab={activeTab} setActiveTab={setActiveTab} />
               {displayTabContent}

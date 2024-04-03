@@ -6,12 +6,13 @@ import { COLORS } from '../../../constants';
 import NearbyJobCard from '../../common/cards/nearby/NearbyJobCard';
 import useFetch from '../../../hook/useFetch'
 
-const Nearbyjobs = () => {
+const Nearbyjobs = ({ city }) => {
   const router = useRouter();
   const { data, isLoading, error } = useFetch(
     'search', {
-      query: 'React developer',
-      num_pages: 1
+      query: city,
+      num_pages: 1,
+      radius: 13,
   })
 
   return (

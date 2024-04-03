@@ -16,53 +16,21 @@ const useFetch = (endpoint, query) => {
     params: { ...query },
   };
 
-  // const fetchData = async () => {
-  //   setIsLoading(true);
-
-  //   try{
-  //       const response = await axios.request(options);
-
-  //       setData(response.data.data);
-  //       setIsLoading(false);
-  //   } catch (error) {
-  //       setError(error);
-  //       alert('There is an error');
-  //   } finally {
-  //       setIsLoading(false);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  // const reFetch = () => {
-  //   setIsLoading(true);
-  //   fetchData();
-  // }
-
-  // for test
-  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const fetchData = async () => {
     setIsLoading(true);
-    try {
-      const response = apiTest;
-      if (endpoint === 'job-details') {
-        const filtered = apiTest.data.find(job => job.job_id === query.job_id);
-        setData([filtered])
-      } else {
-        setData(response.data);
-      }
-      await sleep(1000);
-    
-      setIsLoading(false);
+
+    try{
+        const response = await axios.request(options);
+
+        setData(response.data.data);
+        setIsLoading(false);
     } catch (error) {
-      setError(error);
-      alert("There is an error");
+        setError(error);
+        alert('There is an error');
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
-  };
+  }
 
   useEffect(() => {
     fetchData();
@@ -71,7 +39,39 @@ const useFetch = (endpoint, query) => {
   const reFetch = () => {
     setIsLoading(true);
     fetchData();
-  };
+  }
+
+  // for test
+  // const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  // const fetchData = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const response = apiTest;
+  //     if (endpoint === 'job-details') {
+  //       const filtered = apiTest.data.find(job => job.job_id === query.job_id);
+  //       setData([filtered])
+  //     } else {
+  //       setData(response.data);
+  //     }
+  //     await sleep(2000);
+    
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     setError(error);
+  //     alert("There is an error");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  // const reFetch = () => {
+  //   setIsLoading(true);
+  //   fetchData();
+  // };
   // for test
 
   return { data, isLoading, error, reFetch };
