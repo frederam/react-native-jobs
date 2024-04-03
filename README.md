@@ -1,8 +1,3 @@
-## 🚀 How to use
-
-```sh
-npx create-expo-app -e with-router
-```
 ## How to run locally
 1. Download Expo Go app
 2. Run npm install
