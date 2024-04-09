@@ -6,7 +6,7 @@ import { COLORS, icons, SIZES } from "../constants";
 import styles from "../components/home/welcome/welcome.style";
 import { ScreenHeaderBtn, Menu } from '../components'
 
-const Home = () => {
+export default function Home() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -63,5 +63,3 @@ const Home = () => {
     </SafeAreaView>
   );
 };
-
-export default Home;

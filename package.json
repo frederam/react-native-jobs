@@ -31,7 +31,8 @@
     "react-native-screens": "^3.29.0",
     "react-native-web": "^0.19.10",
     "semver": "^7.6.0",
-    "uglify-js": "^3.17.4"
+    "uglify-js": "^3.17.4",
+    "expo-updates": "~0.24.12"
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",
