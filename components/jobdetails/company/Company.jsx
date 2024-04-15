@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
+import { SvgCssUri } from "react-native-svg/css";
 
 import styles from "./company.style";
 
 import { icons } from "../../../constants";
-import { useImageEffect } from "../../../utils";
+import { useImageEffect } from "../../../utils/uneImageEffect";
 
 const Company = ({ companyLogo, jobTitle, companyName, location }) => {
   const placeholder = require("../../../assets/logo_placeholder.jpg");
@@ -12,7 +13,11 @@ const Company = ({ companyLogo, jobTitle, companyName, location }) => {
   return (
     <View style={styles.container}>
       <View style={styles.logoBox}>
-        <Image source={imageSource} style={styles.logoImage} resizeMode="contain" />
+        {imageSource?.svgUri ? (
+          <SvgCssUri height={50} width={50} uri={imageSource.svgUri} />
+        ) : (
+          <Image source={imageSource} style={styles.logoImage} resizeMode="contain" />
+        )}
       </View>
       <View style={styles.jobTitleBox}>
         <Text style={styles.jobTitle}>{jobTitle}</Text>

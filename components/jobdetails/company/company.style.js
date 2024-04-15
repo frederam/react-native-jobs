@@ -13,12 +13,14 @@ const styles = StyleSheet.create({
     height: 80,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF",
+    backgroundColor: "#F3F4F8",
     borderRadius: SIZES.large,
   },
   logoImage: {
-    width: "50%",
-    height: "50%",
+    width: "100%",
+    height: "100%",
+    objectFit: 'contain',
+    borderRadius: SIZES.large,
   },
   jobTitleBox: {
     marginTop: SIZES.small,

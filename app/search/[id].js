@@ -13,21 +13,19 @@ const JobSearch = () => {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const flatListRef = useRef(null);
-  console.log(params)
 
   const { data, isLoading, error, reFetch } = useFetch("search", {
-    query: params.id + ' ' + params.city,
+    query: params.id + " " + params.city,
     page: page,
     num_pages: 1,
+    employment_types: params.type,
   });
 
   const handlePagination = (direction) => {
     if (direction === "left" && page > 1) {
       setPage(page - 1);
-      reFetch();
     } else if (direction === "right") {
       setPage(page + 1);
-      reFetch();
     }
   };
   const scrollToTop = () => {
@@ -37,6 +35,7 @@ const JobSearch = () => {
   };
   useEffect(() => {
     scrollToTop();
+    reFetch();
   }, [page]);
 
   return (
@@ -73,19 +72,31 @@ const JobSearch = () => {
             </View>
           </>
         )}
-        ListFooterComponent={() => (
-          <View style={styles.footerContainer}>
-            <TouchableOpacity style={styles.paginationButton} onPress={() => handlePagination("left")}>
-              <Image source={icons.chevronLeft} style={styles.paginationImage} resizeMode="contain" />
-            </TouchableOpacity>
-            <View style={styles.paginationTextBox}>
-              <Text style={styles.paginationText}>{page}</Text>
+        ListFooterComponent={() =>
+          data?.length > 0 ? (
+            <View style={styles.footerContainer}>
+              <TouchableOpacity
+                disabled={isLoading}
+                style={styles.paginationButton}
+                onPress={() => handlePagination("left")}
+              >
+                <Image source={icons.chevronLeft} style={styles.paginationImage} resizeMode="contain" />
+              </TouchableOpacity>
+              <View style={styles.paginationTextBox}>
+                <Text style={styles.paginationText}>{page}</Text>
+              </View>
+              <TouchableOpacity
+                disabled={isLoading}
+                style={styles.paginationButton}
+                onPress={() => handlePagination("right")}
+              >
+                <Image source={icons.chevronRight} style={styles.paginationImage} resizeMode="contain" />
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.paginationButton} onPress={() => handlePagination("right")}>
-              <Image source={icons.chevronRight} style={styles.paginationImage} resizeMode="contain" />
-            </TouchableOpacity>
-          </View>
-        )}
+          ) : (
+            !isLoading && <Text style={{ alignSelf: "center" }}>No results found</Text>
+          )
+        }
       />
     </SafeAreaView>
   );

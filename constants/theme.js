@@ -1,7 +1,7 @@
 const COLORS = {
-  primary: "#312651",
+  primary: "#1106a1",
   secondary: "#444262",
-  tertiary: "#FF7754",
+  tertiary: "#7088ff",
 
   gray: "#83829A",
   gray2: "#C1C0C8",
